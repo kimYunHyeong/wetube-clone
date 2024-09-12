@@ -7,12 +7,18 @@
     "url": "(https://gitub.com/kimYunHyeong/wetube-clone)"
   },
   "scripts": {
-    "start": "node index.js"
+    "dev": "nodemon --exec babel-node src/server.js"
   },
   "author": "Kim Yun Hyeong",
   "license": "ISC",
   "homepage": "https://gitub.com/kimYunHyeong/wetube-clone#readme",
   "dependencies": {
     "express": "^4.20.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.2",
+    "@babel/node": "^7.25.0",
+    "@babel/preset-env": "^7.25.4",
+    "nodemon": "^3.1.4"
   }
 }
