@@ -1,10 +1,8 @@
-export const showHomepage = (req, res) => res.render("home");
-export const search = (res, req) => res.render("see");
-export const see = (req, res) => res.render("see");
-export const edit = (req, res) => {
-  console.log(req.params);
-  return res.send("Edit Videos");
-};
+export const showHomepage = (req, res) =>
+  res.render("home", { pageTitle: "Home", potato: "sdfgsdfg" });
+export const search = (res, req) => res.render("watch");
+export const watch = (req, res) => res.render("watch");
+export const edit = (req, res) => res.render("Edit");
 export const deleteVideo = (req, res) => {
   console.log(req.params);
   return res.send("delte Videos");
