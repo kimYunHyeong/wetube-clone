@@ -1,5 +1,53 @@
-export const showHomepage = (req, res) =>
-  res.render("home", { pageTitle: "Home", potato: "sdfgsdfg" });
+const faker = {
+  username: "Kim Yun Hyeong",
+  loggedIn: false,
+};
+
+export const showHomepage = (req, res) => {
+  const videos = [
+    {
+      title: "hello1",
+      rating: 5,
+      comments: 2,
+      cratedAt: "2 minutes ago",
+      views: 59,
+      id: 1,
+    },
+    {
+      title: "hello2",
+      rating: 5,
+      comments: 2,
+      cratedAt: "2 minutes ago",
+      views: 59,
+      id: 2,
+    },
+    {
+      title: "hello3",
+      rating: 5,
+      comments: 2,
+      cratedAt: "2 minutes ago",
+      views: 59,
+      id: 3,
+    },
+    {
+      title: "hello4",
+      rating: 5,
+      comments: 2,
+      cratedAt: "2 minutes ago",
+      views: 59,
+      id: 4,
+    },
+    {
+      title: "hello5",
+      rating: 5,
+      comments: 2,
+      cratedAt: "2 minutes ago",
+      views: 59,
+      id: 5,
+    },
+  ];
+  res.render("home", { pageTitle: "Home", faker: faker, videos });
+};
 export const search = (res, req) => res.render("watch");
 export const watch = (req, res) => res.render("watch");
 export const edit = (req, res) => res.render("Edit");
