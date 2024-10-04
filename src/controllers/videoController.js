@@ -4,7 +4,7 @@ const faker = {
 };
 
 export const showHomepage = (req, res) => {
-  const videos = [
+  let videos = [
     {
       title: "hello1",
       rating: 5,
@@ -48,7 +48,7 @@ export const showHomepage = (req, res) => {
   ];
   res.render("home", { pageTitle: "Home", faker: faker, videos });
 };
-export const search = (res, req) => res.render("watch");
+export const search = (req, res) => res.render("watch");
 export const watch = (req, res) => res.render("watch");
 export const edit = (req, res) => res.render("Edit");
 export const deleteVideo = (req, res) => {
