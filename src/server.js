@@ -14,9 +14,9 @@ app.set("views", process.cwd() + "/src/views");
 app.use(logger);
 app.use("/", globalRouter);
 app.use("/user", userRouter);
-app.use("/video", videoRouter);
+app.use("/videos", videoRouter);
 
 app.listen(
   PORT,
-  console.log(`Server l istening on port http://localhost:${PORT}`)
+  console.log(`Server listening on port http://localhost:${PORT}`)
 );
