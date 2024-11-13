@@ -3,7 +3,7 @@ include mixins/video
 
 block content
     h2 Welcome here
-    each video in videos //iteration => 같은 작업을 반복 videos에 있는 것은 array여야함
+    each video in videos
            +video(video) 
     else
         li sorry nothing found 

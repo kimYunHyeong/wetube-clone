@@ -47,10 +47,7 @@ let videos = [
 ];
 
 export const showHomepage = (req, res) =>
-  res.render("home", { pageTitle: "Home", faker: faker, videos });
-
-export const search = (req, res) =>
-  res.render("watch", { pageTitle: "Home", faker: faker, videos });
+  res.render("home", { pageTitle: "Home", videos });
 
 export const watch = (req, res) => {
   const { id } = req.params;
@@ -58,16 +55,23 @@ export const watch = (req, res) => {
 
   res.render("watch", {
     pageTitle: `watching ${video.title}`,
-    faker: faker,
+
     video,
   });
 };
 
-export const edit = (req, res) =>
-  res.render("Edit", { pageTitle: "Home", faker: faker, videos });
-
-export const deleteVideo = (req, res) => {
-  console.log(req.params);
-  return res.send("delte Videos");
+export const getEdit = (req, res) => {
+  const { id } = req.params;
+  const video = videos[id - 1];
+  res.render("edit", {
+    pageTitle: `editing ${video.title}`,
+    video,
+  });
 };
-export const upload = (req, res) => res.send("upload Videos");
+
+export const postEdit = (req, res) => {
+  const { id } = req.params;
+  const { title } = req.body;
+  videos[id - 1].title = title;
+  return res.redirect(`/videos/${id}`);
+};
