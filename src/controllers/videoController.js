@@ -1,3 +1,4 @@
+import { render } from "pug";
 import Video from "../models/Video";
 
 const faker = {
@@ -5,16 +6,9 @@ const faker = {
   loggedIn: false,
 };
 
-export const showHomepage = (req, res) => {
-  Video.find({})
-    .then((videos) => {
-      console.log("videos", videos);
-      return res.render("home", { pageTitle: "Home", videos: videos });
-    })
-    .catch((error) => {
-      console.log("errors", error);
-    });
-  //res.render("home", { pageTitle: "Home", videos: [] });
+export const showHomepage = async (req, res) => {
+  const videos = await Video.find({});
+  res.render("home", { pageTitle: "Home", videos });
 };
 
 export const watch = (req, res) => {
@@ -42,8 +36,19 @@ export const getUpload = (req, res) => {
   return res.render("upload", { pageTitle: "Upload Video" });
 };
 
-export const postUpload = (req, res) => {
+export const postUpload = async (req, res) => {
   //add video
-  const { title } = req.body;
-  res.redirect("/");
+  const { title, descripttion, hashtags } = req.body;
+  await Video.create({
+    title,
+    descripttion,
+    createdAt: Date.now(),
+    hashTags: hashtags.split(",").map((word) => `${word}`),
+    meta: {
+      views: 0,
+      rating: 0,
+    },
+  });
+
+  return res.redirect("/");
 };
