@@ -11,11 +11,13 @@ export const showHomepage = async (req, res) => {
   res.render("home", { pageTitle: "Home", videos });
 };
 
-export const watch = (req, res) => {
+export const watch = async (req, res) => {
   const { id } = req.params;
+  const video = await Video.findById(id);
 
-  res.render("watch", {
+  return res.render("watch", {
     pageTitle: `watching ${video.title}`,
+    video,
   });
 };
 
