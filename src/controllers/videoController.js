@@ -1,10 +1,4 @@
-import { render } from "pug";
 import Video from "../models/Video";
-
-const faker = {
-  username: "Kim Yun Hyeong",
-  loggedIn: false,
-};
 
 export const showHomepage = async (req, res) => {
   const videos = await Video.find({}).sort({ createdAt: "descending" });
