@@ -58,7 +58,7 @@ export const postLogin = async (req, res) => {
       .status(400)
       .render("login", { pageTitle, errorMessage: "Wrong password" });
   }
-  req.session.loggeIn = true;
+  req.session.loggedIn = true;
   req.session.user = user;
   return res.redirect("/");
 };
@@ -129,7 +129,7 @@ export const finishGithubLogin = async (req, res) => {
         location: userData.location,
       });
     }
-    req.session.loggeIn = true;
+    req.session.loggedIn = true;
     req.session.user = user;
     return res.redirect("/");
   } else {
@@ -143,5 +143,12 @@ export const logout = (req, res) => {
   return res.redirect("/");
 };
 
-export const edit = (req, res) => res.send("Edit Users");
+export const getEdit = (req, res) => {
+  return res.render("edit-profile", { pageTitle: "Edit Profile" });
+};
+
+export const postEdit = (req, res) => {
+  return res.render("eidt-profile");
+};
+
 export const see = (req, res) => res.send("see Users");
