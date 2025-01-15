@@ -13,12 +13,12 @@ html(lang="en")
         nav
             ul
                 li
-                    a(href="/videos/upload") upload Video
-                li
                     a(href="/") go to home
                 li
                     a(href="/search") Search
                 if loggedIn
+                    li
+                        a(href="/videos/upload") upload Video
                     li
                         a(href="/user/edit") Edit profile
                     li
