@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import fetch from "node-fetch";
 
 export const getJoin = (req, res) =>
-  res.render("join", { pageTitle: "Create Account" });
+  res.render("user/join", { pageTitle: "Create Account" });
 
 export const postJoin = async (req, res) => {
   const { name, username, email, password, checkPassword, location } = req.body;
@@ -40,14 +40,14 @@ export const postJoin = async (req, res) => {
 };
 
 export const getLogin = (req, res) =>
-  res.render("login", { pageTitle: "Log in" });
+  res.render("user/login", { pageTitle: "Log in" });
 
 export const postLogin = async (req, res) => {
   const { username, password } = req.body;
   const pageTitle = "Log in";
   const user = await User.findOne({ username, socialOnly: false });
   if (!user) {
-    return res.status(400).render("login", {
+    return res.status(400).render("user/login", {
       pageTitle,
       errorMessage: "An account doesn't exists ",
     });
@@ -56,7 +56,7 @@ export const postLogin = async (req, res) => {
   if (!ok) {
     return res
       .status(400)
-      .render("login", { pageTitle, errorMessage: "Wrong password" });
+      .render("user/login", { pageTitle, errorMessage: "Wrong password" });
   }
   req.session.loggedIn = true;
   req.session.user = user;
@@ -144,7 +144,7 @@ export const logout = (req, res) => {
 };
 
 export const getEdit = (req, res) => {
-  return res.render("edit-profile", { pageTitle: "Edit Profile" });
+  return res.render("user/edit-profile", { pageTitle: "Edit Profile" });
 };
 
 export const postEdit = async (req, res) => {
@@ -154,6 +154,14 @@ export const postEdit = async (req, res) => {
     },
     body: { name, email, username, location },
   } = req;
+
+  const checkExists = await User.exists({ $or: [{ username }, { email }] });
+  if (checkExists) {
+    return res.status(400).render("user/edit-profile", {
+      pageTitle: "Edit profile",
+      errorMessage: "same email or user name are already exists",
+    });
+  }
 
   const updatedUser = await User.findByIdAndUpdate(
     _id,
@@ -165,8 +173,42 @@ export const postEdit = async (req, res) => {
     },
     { new: true }
   );
+
   req.session.user = updatedUser;
   return res.redirect("/user/edit");
+};
+
+export const getChangePassword = (req, res) => {
+  return res.render("user/change-password", { pageTitle: "change Password" });
+};
+
+export const postChangePassword = async (req, res) => {
+  const {
+    session: {
+      user: { _id, password },
+    },
+    body: { oldPassword, newPassword, newPasswordConfirmation },
+  } = req;
+
+  const ok = await bcrypt.compare(oldPassword, password);
+  if (!ok) {
+    return res.status(400).render("user/change-password", {
+      pageTitle: "change Password",
+      errorMessage: "not correct current password",
+    });
+  }
+  if (newPassword !== newPasswordConfirmation) {
+    return res.status(400).render("user/change-password", {
+      pageTitle: "change Password",
+      errorMessage: "new password are not same",
+    });
+  }
+
+  const user = await User.findById(_id);
+  user.password = newPassword;
+  await user.save();
+  req.session.user.password = user.password;
+  return res.redirect("/user/logout");
 };
 
 export const see = (req, res) => res.send("see Users");
