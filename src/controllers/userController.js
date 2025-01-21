@@ -220,4 +220,14 @@ export const postChangePassword = async (req, res) => {
   return res.redirect("/user/logout");
 };
 
-export const see = (req, res) => res.send("see Users");
+export const getUserProfile = async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findById(id);
+  if (!user) {
+    return res.status(404).render("404", { pageTitle: "User not Found" });
+  }
+  return res.render("user/user-profile", {
+    pageTitle: `${user.name}의 profile`,
+    user,
+  });
+};

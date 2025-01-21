@@ -2,7 +2,7 @@ import express from "express";
 import {
   getEdit,
   postEdit,
-  see,
+  getUserProfile,
   logout,
   startGithubLogin,
   finishGithubLogin,
@@ -11,26 +11,31 @@ import {
 } from "../controllers/userController";
 
 import {
+  avatarUpload,
   protectorMiddleware,
   publicOnlyMiddleware,
-  uploadFiles,
 } from "../middlewares";
 
 const userRouter = express.Router();
 
-userRouter.get(":id", see);
+//log in and out
+userRouter.get("/github/start", publicOnlyMiddleware, startGithubLogin);
+userRouter.get("/github/finish", publicOnlyMiddleware, finishGithubLogin);
 userRouter.get("/logout", protectorMiddleware, logout);
+
+//see user profile
+userRouter.get("/:id", getUserProfile);
+
+//edit
 userRouter
   .route("/edit")
   .all(protectorMiddleware)
   .get(getEdit)
-  .post(uploadFiles.single("avatar"), postEdit);
+  .post(avatarUpload.single("avatar"), postEdit);
 userRouter
   .route("/change-password")
   .all(protectorMiddleware)
   .get(getChangePassword)
   .post(postChangePassword);
-userRouter.get("/github/start", publicOnlyMiddleware, startGithubLogin);
-userRouter.get("/github/finish", publicOnlyMiddleware, finishGithubLogin);
 
 export default userRouter;
